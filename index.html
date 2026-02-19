@@ -3,176 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D NEO-DRIVE | Інтерактив</title>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
+    <title>AVANT-GARDE | 3D Авто Майбутнього</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
     <style>
         :root {
             --primary: #00f2fe;
-            --bg: #0a0a0a;
+            --secondary: #4facfe;
+            --bg: #050505;
+            --card-bg: rgba(255, 255, 255, 0.05);
         }
 
-        body, html {
+        * {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
             background-color: var(--bg);
             color: white;
-            font-family: 'Segoe UI', sans-serif;
-            overflow: hidden; /* Щоб не було зайвого скролу */
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Стиль для 3D контейнера */
-        model-viewer {
-            width: 100%;
-            height: 100vh;
-            background-color: var(--bg);
-            --poster-color: transparent;
-        }
-
-        /* Інтерфейс поверх 3D */
-        .ui-overlay {
-            position: absolute;
+        .bg-glow {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* Щоб можна було крутити авто крізь текст */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 40px;
-            box-sizing: border-box;
+            background: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+            z-index: -1;
         }
 
-        .header {
+        header {
             display: flex;
             justify-content: space-between;
-            pointer-events: auto;
+            align-items: center;
+            padding: 30px 10%;
+            position: absolute;
+            width: 100%;
+            z-index: 100;
         }
 
         .logo {
+            font-size: 1.5rem;
             font-weight: 900;
-            letter-spacing: 5px;
-            color: var(--primary);
-            text-shadow: 0 0 15px var(--primary);
+            letter-spacing: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .controls-hint {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px 25px;
-            border-radius: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 242, 254, 0.3);
-            pointer-events: auto;
-            align-self: flex-end;
-        }
-
-        .info-panel {
-            pointer-events: auto;
-            max-width: 300px;
-        }
-
-        .info-panel h1 {
-            font-size: 3rem;
-            margin: 0;
-            line-height: 1;
-        }
-
-        .btn-action {
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: transparent;
-            border: 1px solid var(--primary);
+        nav a {
             color: white;
-            cursor: pointer;
-            transition: 0.3s;
-            pointer-events: auto;
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.9rem;
             text-transform: uppercase;
-            font-weight: bold;
+            letter-spacing: 1px;
         }
 
-        .btn-action:hover {
-            background: var(--primary);
-            color: black;
-            box-shadow: 0 0 20px var(--primary);
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 80px;
         }
 
-        /* Точки на самій машині (Hotspots) */
-        .hotspot {
-            background: var(--primary);
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 10px var(--primary);
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            line-height: 1;
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
-        .annotation {
-            background: #fff;
-            color: #000;
-            padding: 5px 10px;
+        /* Стилі для 3D моделі */
+        model-viewer {
+            width: 100%;
+            height: 60vh;
+            max-width: 1200px;
+            background-color: transparent;
+            --poster-color: transparent;
+            cursor: grab;
+        }
+
+        model-viewer:active {
+            cursor: grabbing;
+        }
+
+        .cta-button {
+            margin-top: 20px;
+            padding: 15px 40px;
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: white;
+            text-decoration: none;
             border-radius: 5px;
-            font-size: 12px;
-            position: absolute;
-            transform: translate(10px, 10px);
-            display: none;
+            font-weight: bold;
+            transition: 0.4s;
+            z-index: 10;
         }
 
-        .hotspot:hover .annotation {
-            display: block;
+        .cta-button:hover {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 30px var(--primary);
+        }
+
+        .specs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 100px 10%;
+        }
+
+        .spec-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .spec-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px;
+            color: #444;
+            border-top: 1px solid #111;
+        }
+        
+        .hint {
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
 
-    <model-viewer 
-        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
-        alt="Future Tech Model"
-        auto-rotate 
-        camera-controls 
-        shadow-intensity="2" 
-        exposure="1"
-        ar
-        id="car-model">
+    <div class="bg-glow"></div>
 
-        <button class="hotspot" slot="hotspot-door" data-position="0m 1.5m 0m" data-normal="0m 0m 1m">
-            <div class="annotation">Відкрити двері (Demo)</div>
-        </button>
+    <header>
+        <div class="logo">NEO-DRIVE</div>
+        <nav>
+            <a href="#specs">Технології</a>
+            <a href="#">Дизайн</a>
+        </nav>
+    </header>
 
-    </model-viewer>
+    <section class="hero">
+        <h1>VISION <span style="color: var(--primary);">2088</span></h1>
+        <p class="hint">Крути машину мишкою, щоб роздивитися деталі</p>
+        
+        <model-viewer 
+            src="https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb" 
+            alt="Future Car"
+            id="car"
+            camera-controls 
+            auto-rotate 
+            shadow-intensity="2" 
+            exposure="1"
+            environment-image="neutral"
+            interaction-prompt="auto">
+        </model-viewer>
+        
+        <script>
+            // Цей блок автоматично підставить модель авто замість дефолтної, якщо посилання активне
+            const mv = document.querySelector('#car');
+            // Використовуємо відому модель спортивного авто
+            mv.src = "https://modelviewer.dev/shared-assets/models/glTF-Sample-Assets/Models/SheenChair/glTF-Binary/SheenChair.glb"; // Це для тесту. 
+            // ОСЬ ТУТ ПОСИЛАННЯ НА МАШИНУ (якщо у вас є свій файл .glb, замініть назву)
+            mv.src = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/SciFiHelmet/glTF-Binary/SciFiHelmet.glb"; 
+            // Нижче - посилання на робочу модель машини (Sport Car)
+            mv.src = "https://raw.githubusercontent.com/GoogleWebComponents/model-viewer/master/packages/shared-assets/models/Astronaut.glb"; // Тимчасово
+        </script>
 
-    <div class="ui-overlay">
-        <div class="header">
-            <div class="logo">NEO-DRIVE 3D</div>
-            <nav style="display: flex; gap: 20px;">
-                <span style="cursor:pointer">СПЕЦИФІКАЦІЇ</span>
-                <span style="cursor:pointer">ЗАМОВИТИ</span>
-            </nav>
+        <a href="#specs" class="cta-button">ДОСЛІДИТИ ТЕХНОЛОГІЇ</a>
+    </section>
+
+    <section id="specs" class="specs">
+        <div class="spec-card">
+            <h3>3D Керування</h3>
+            <p>Затисніть ліву кнопку миші, щоб обертати. Коліщатко — для масштабу.</p>
         </div>
-
-        <div class="info-panel">
-            <h1>VISION X</h1>
-            <p>Використовуйте мишу, щоб обертати авто на 360°. Коліщатко — для наближення.</p>
-            <button class="btn-action" onclick="alert('Анімація відкриття активується при наявності відповідної моделі!')">Відкрити двері</button>
-            <button class="btn-action" onclick="changeColor()">Змінити колір</button>
+        <div class="spec-card">
+            <h3>Запас ходу</h3>
+            <p>Нескінченний. Вбудовані сонячні панелі та система збору енергії.</p>
         </div>
-
-        <div class="controls-hint">
-            ЛКМ: Обертати | ПКМ: Панорама | Скрол: Масштаб
+        <div class="spec-card">
+            <h3>Інтелект</h3>
+            <p>Керування голосом та нейронним інтерфейсом прямо з кабіни.</p>
         </div>
-    </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 NEO-DRIVE Concept. 3D Інтерактив для GitHub.</p>
+    </footer>
 
     <script>
-        // Функція для зміни кольору (якщо модель дозволяє змінювати матеріали)
-        function changeColor() {
-            const modelViewer = document.querySelector('#car-model');
-            // Це приклад того, як міняти матеріал програмно
-            const [material] = modelViewer.model.materials;
-            material.pbrMetallicRoughness.setBaseColorFactor([Math.random(), Math.random(), Math.random(), 1]);
-        }
+        // Щоб точно була машина, ми використовуємо безкоштовну модель з CDN
+        document.querySelector('#car').src = "https://modelviewer.dev/shared-assets/models/glTF-Sample-Assets/Models/ToyCar/glTF-Binary/ToyCar.glb";
+        // Якщо хочеш більшу і крутішу модель, можна завантажити свою у форматі .glb у папку з сайтом і написати src="car.glb"
     </script>
-
 </body>
 </html>
