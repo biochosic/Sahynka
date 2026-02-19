@@ -3,171 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toyota Avensis T25 | Turbo Diesel Edition</title>
+    <title>NEO-GENESIS | Future 3D Experience</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+
         :root {
-            --neon-blue: #00f2fe;
-            --deep-dark: #0a0a0c;
-            --glass: rgba(255, 255, 255, 0.05);
+            --cyan: #00f2fe;
+            --magenta: #ff00ff;
+            --bg: #050505;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            background-color: var(--deep-dark);
+            background-color: var(--bg);
             color: white;
-            font-family: 'Orbitron', sans-serif; /* Футуристичний шрифт */
-            overflow-x: hidden;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden; /* Весь сайт — один екран */
         }
 
-        /* Фоновий ефект сітки */
-        .grid-bg {
+        /* Анімований фон */
+        .cyber-bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 50% 50%, #101827 0%, #050505 100%);
             z-index: -1;
         }
 
+        /* Навігація */
         header {
-            padding: 40px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 5px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            border-bottom: 1px solid rgba(0, 242, 254, 0.1);
         }
 
-        .car-container {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: var(--cyan);
+            text-shadow: 0 0 15px var(--cyan);
+        }
+
+        /* Контейнер для 3D моделі */
+        .experience {
+            width: 100vw;
+            height: 100vh;
             display: flex;
+            align-items: center;
             justify-content: center;
         }
 
-        .main-photo {
+        model-viewer {
             width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(0, 242, 254, 0.2);
-            border: 1px solid var(--neon-blue);
-            transition: 0.5s;
+            height: 100%;
+            background-color: transparent;
+            --poster-color: transparent;
         }
 
-        /* Точки інтерактивності (Сканери) */
-        .scanner-point {
+        /* Бокова панель з інфо */
+        .side-panel {
             position: absolute;
+            left: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 350px;
+            z-index: 5;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            padding: 30px;
+            border-radius: 2px;
+            border-left: 5px solid var(--cyan);
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            line-height: 0.9;
+        }
+
+        .accent { color: var(--cyan); }
+
+        p {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 12px 30px;
+            background: transparent;
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .btn:hover {
+            background: var(--cyan);
+            color: black;
+            box-shadow: 0 0 20px var(--cyan);
+        }
+
+        /* Точки на машині (Hotspots) */
+        .hotspot {
             width: 20px;
             height: 20px;
-            background: var(--neon-blue);
             border-radius: 50%;
+            border: none;
+            background-color: var(--cyan);
+            box-shadow: 0 0 10px var(--cyan);
             cursor: pointer;
-            box-shadow: 0 0 15px var(--neon-blue);
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .info-box {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.85);
-            border: 1px solid var(--neon-blue);
-            padding: 15px;
-            border-radius: 5px;
+        .annotation {
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 150px;
             display: none;
-            width: 200px;
-            z-index: 10;
-            backdrop-filter: blur(5px);
+            position: absolute;
+            top: 25px;
+            left: 25px;
         }
 
-        .scanner-point:hover + .info-box {
+        .hotspot:focus .annotation { display: block; }
+
+        /* Футер */
+        .footer-info {
+            position: absolute;
+            bottom: 30px;
+            right: 50px;
+            text-align: right;
+        }
+
+        .stat {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
             display: block;
         }
 
-        /* Специфікації */
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            padding: 50px 10%;
-        }
-
-        .spec-card {
-            background: var(--glass);
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .spec-card:hover {
-            border-color: var(--neon-blue);
-            transform: translateY(-5px);
-        }
-
-        .spec-card h3 { color: var(--neon-blue); margin-bottom: 10px; }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            opacity: 0.5;
-            font-size: 0.8rem;
+        .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--cyan);
+            letter-spacing: 2px;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="grid-bg"></div>
+    <div class="cyber-bg"></div>
 
     <header>
-        <h1>Toyota Avensis <span>T25</span></h1>
-        <p style="color: var(--neon-blue);">Project: Future Diesel Heritage</p>
+        <div class="logo">NEO-GEN</div>
+        <div class="status">SYSTEM: ONLINE</div>
     </header>
 
-    <div class="car-container">
-        <img src="1509.jpg" alt="Toyota Avensis" class="main-photo">
+    <main class="experience">
+        <model-viewer 
+            id="car"
+            src="https://modelviewer.dev/shared-assets/models/glTF-Sample-Assets/Models/ToyCar/glTF-Binary/ToyCar.glb" 
+            alt="Futuristic Concept Car"
+            auto-rotate 
+            camera-controls 
+            shadow-intensity="2" 
+            exposure="1.5"
+            camera-orbit="45deg 75deg 2m"
+            min-camera-orbit="auto auto auto"
+            max-camera-orbit="auto auto auto">
 
-        <div class="scanner-point" style="top: 60%; left: 15%;"></div>
-        <div class="info-box" style="top: 40%; left: 0%;">
-            <strong>ENGINE: 2.2 D-4D</strong><br>
-            Турбодизель з високим крутним моментом. Економічність та міць.
-        </div>
+            <button class="hotspot" slot="hotspot-1" data-position="-0.05m 0.1m 0.4m" data-normal="0m 0m 1m">
+                <div class="annotation">Квантові лазерні фари</div>
+            </button>
 
-        <div class="scanner-point" style="top: 45%; left: 85%;"></div>
-        <div class="info-box" style="top: 25%; left: 70%;">
-            <strong>CARGO SPACE</strong><br>
-            Величезний багажник універсала. Місця вистачить для всього.
-        </div>
+            <button class="hotspot" slot="hotspot-2" data-position="0.2m 0.2m -0.1m" data-normal="1m 0m 0m">
+                <div class="annotation">Двері "Крила Сокола"</div>
+            </button>
 
-        <div class="scanner-point" style="top: 75%; left: 48%;"></div>
-        <div class="info-box" style="top: 55%; left: 55%;">
-            <strong>CHASSIS</strong><br>
-            М'яка підвіска для комфортних подорожей на будь-які відстані.
+        </model-viewer>
+    </main>
+
+    <div class="side-panel">
+        <div class="glass-card">
+            <h1>CONCEPT <br><span class="accent">X-2077</span></h1>
+            <p>Перший у світі автомобіль на антиматерії. Дизайн, що ігнорує закони аеродинаміки.</p>
+            <button class="btn" onclick="randomColor()">Змінити колір</button>
         </div>
     </div>
 
-    <section class="specs-grid">
-        <div class="spec-card">
-            <h3>FUEL</h3>
-            <p>Diesel D-4D</p>
+    <div class="footer-info">
+        <div>
+            <span class="stat">0-100 <span class="accent">0.9s</span></span>
+            <span class="label">Прискорення</span>
         </div>
-        <div class="spec-card">
-            <h3>STYLE</h3>
-            <p>Station Wagon</p>
+        <div style="margin-top: 20px;">
+            <span class="stat accent">MAX SPEED: ∞</span>
+            <span class="label">Швидкість світла</span>
         </div>
-        <div class="spec-card">
-            <h3>STATUS</h3>
-            <p>Reliable Legend</p>
-        </div>
-    </section>
+    </div>
 
-    <footer>
-        &copy; 2026 Avensis Turbo Project | Створено з повагою до японської інженерії
-    </footer>
+    <script>
+        // Функція для зміни кольору машини (інтерактив)
+        function randomColor() {
+            const mv = document.querySelector('#car');
+            const color = [Math.random(), Math.random(), Math.random(), 1];
+            
+            // Намагаємось змінити колір матеріалу, якщо модель це підтримує
+            if(mv.model && mv.model.materials[0]) {
+                mv.model.materials.forEach(mat => {
+                    mat.pbrMetallicRoughness.setBaseColorFactor(color);
+                });
+            }
+        }
+
+        // Щоб машина була крутішою, ми автоматично підтягнемо іншу модель, якщо вона доступна
+        // У цьому демо використовується стандартна ToyCar для стабільності
+    </script>
 
 </body>
 </html>
+
