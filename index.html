@@ -4,62 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AURORAN X-900 | Hydrogen Synthesis</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
+            --bg-color: #050505;
             --accent-cyan: #00f2fe;
-            --accent-purple: #8a2be2;
-            --text-dim: #999;
+            --accent-purple: #7000ff;
+            --text-gray: #888;
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            background-color: var(--bg);
+            background-color: var(--bg-color);
             color: white;
             font-family: 'Rajdhani', sans-serif;
             margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             overflow-x: hidden;
         }
 
-        /* Шапка */
+        /* Навігація */
         header {
+            width: 90%;
+            max-width: 1400px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 25px 5%;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 30px 0;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .logo {
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            letter-spacing: 4px;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
         }
 
         .system-status {
+            border: 1px solid var(--glass-border);
+            padding: 6px 15px;
+            border-radius: 4px;
             font-size: 0.7rem;
-            border: 1px solid #333;
-            padding: 5px 15px;
-            border-radius: 3px;
             color: var(--accent-cyan);
             letter-spacing: 1px;
         }
 
-        /* Головний екран */
-        .main-section {
+        /* Основний контент */
+        .hero {
+            width: 90%;
+            max-width: 1400px;
             display: grid;
-            grid-template-columns: 1.2fr 2fr 0.5fr;
+            grid-template-columns: 1fr 1.5fr 0.3fr;
             align-items: center;
-            padding: 60px 5%;
-            min-height: 80vh;
+            padding: 80px 0;
+            position: relative;
         }
 
-        .hero-info h1 {
+        .hero-text h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 4.2rem;
+            font-size: 4rem;
             line-height: 0.9;
             margin: 0 0 20px 0;
             background: linear-gradient(180deg, #fff 0%, #777 100%);
@@ -67,51 +74,51 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-info p {
-            color: var(--text-dim);
+        .hero-text p {
+            color: var(--text-gray);
             font-size: 1.1rem;
             margin-bottom: 40px;
+            max-width: 350px;
         }
 
-        .btn-cyan {
-            background: var(--accent-cyan);
+        .btn-main {
+            background-color: var(--accent-cyan);
             color: black;
             border: none;
             padding: 15px 30px;
             font-family: 'Orbitron', sans-serif;
             font-weight: 900;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             border-radius: 4px;
             cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            text-transform: uppercase;
         }
 
-        /* 3D Машина */
-        .model-container {
+        /* Машина */
+        .car-container {
             position: relative;
-            height: 500px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        model-viewer {
-            width: 130%;
-            height: 100%;
-            --poster-color: transparent;
+        .car-image {
+            width: 120%;
+            z-index: 2;
+            filter: drop-shadow(0 0 40px rgba(112, 0, 255, 0.2));
         }
 
-        /* Світіння за машиною */
-        .glow {
+        .glow-bg {
             position: absolute;
-            width: 500px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, transparent 70%);
-            z-index: -1;
+            width: 450px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(112, 0, 255, 0.15) 0%, transparent 70%);
+            z-index: 1;
         }
 
-        /* Бокове меню кнопок */
-        .side-btns {
+        /* Права колонка кнопок */
+        .side-menu {
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -119,80 +126,99 @@
 
         .side-btn {
             background: transparent;
-            border: 1px solid #222;
-            color: var(--text-dim);
-            padding: 10px;
+            border: 1px solid var(--glass-border);
+            color: var(--text-gray);
+            padding: 10px 20px;
+            font-size: 0.7rem;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.65rem;
             border-radius: 4px;
             cursor: pointer;
             transition: 0.3s;
             text-align: center;
+            min-width: 120px;
         }
 
         .side-btn:hover {
             border-color: var(--accent-cyan);
             color: white;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
         }
 
-        /* Характеристики внизу */
-        .specs-footer {
+        /* Нижня частина - Характеристики */
+        .specs-section {
+            width: 90%;
+            max-width: 1400px;
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr;
             gap: 20px;
-            padding: 40px 5% 100px;
+            padding: 40px 0 100px;
         }
 
-        .specs-header h2 {
+        .specs-title-box h2 {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
-            margin-bottom: 20px;
+            margin: 0 0 25px 0;
         }
 
-        .engine-box {
+        .engine-card {
             border-left: 3px solid var(--accent-purple);
+            background: linear-gradient(90deg, rgba(112, 0, 255, 0.05), transparent);
             padding: 20px;
-            background: linear-gradient(90deg, rgba(138, 43, 226, 0.05) 0%, transparent 100%);
         }
 
-        .engine-box h3 {
+        .engine-card h3 {
             color: var(--accent-cyan);
-            margin: 0 0 10px 0;
             font-size: 1rem;
+            margin: 0 0 10px 0;
         }
 
-        .engine-box p {
-            color: var(--text-dim);
-            font-size: 0.85rem;
+        .engine-card p {
+            font-size: 0.8rem;
+            color: var(--text-gray);
             margin: 0;
+            line-height: 1.4;
         }
 
         .spec-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid #111;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
             padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
         }
 
-        .spec-card .label {
-            color: var(--text-dim);
-            font-size: 0.65rem;
+        .spec-label {
+            color: var(--text-gray);
             text-transform: uppercase;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
             margin-bottom: 15px;
-            display: block;
         }
 
-        .spec-card .value {
+        .spec-value {
             color: var(--accent-cyan);
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            display: block;
+            font-size: 1.6rem;
             margin-bottom: 5px;
         }
 
-        .spec-card .desc {
+        .spec-desc {
             font-size: 0.75rem;
             color: #444;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.6rem;
+            color: #333;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-top: 1px solid var(--glass-border);
         }
     </style>
 </head>
@@ -203,73 +229,57 @@
         <div class="system-status">SYSTEM: READY</div>
     </header>
 
-    <main class="main-section">
-        <div class="hero-info">
+    <main class="hero">
+        <div class="hero-text">
             <h1>HYDROGEN <br> SYNTHESIS</h1>
-            <p>Енергія майбутнього. Швидкість твого життя. <br>Технологія синтезу водню нового покоління.</p>
-            <button class="btn-cyan">ЗАМОВИТИ ТЕСТ-ДРАЙВ</button>
+            <p>Енергія майбутнього. Швидкість твого життя. Технологія синтезу водню нового покоління.</p>
+            <button class="btn-main">ЗАМОВИТИ ТЕСТ-ДРАЙВ</button>
         </div>
 
-        <div class="model-container">
-            <div class="glow"></div>
-            <model-viewer 
-                src="https://modelviewer.dev/shared-assets/models/glTF-Sample-Assets/Models/SheenChair/glTF-Binary/SheenChair.glb" 
-                id="car-model"
-                auto-rotate 
-                camera-controls 
-                shadow-intensity="1" 
-                exposure="1.2"
-                camera-orbit="45deg 75deg 2.5m"
-                interaction-prompt="none">
-            </model-viewer>
+        <div class="car-container">
+            <div class="glow-bg"></div>
+            <img src="https://i.postimg.cc/mD8P8z4p/auroran-white.png" alt="White Supercar" class="car-image">
         </div>
 
-        <div class="side-btns">
+        <div class="side-menu">
             <button class="side-btn">DESIGN</button>
             <button class="side-btn">INTERIOR</button>
-            <button class="side-btn">SUPPORT</button>
+            <button class="side-btn) ">SUPPORT</button>
             <button class="side-btn">ACTIVE</button>
         </div>
     </main>
 
-    <section class="specs-footer">
-        <div class="specs-header">
+    <section class="specs-section">
+        <div class="specs-title-box">
             <h2>Key Specs</h2>
-            <div class="engine-box">
-                <h3>X-2 Hydrogen Engine</h3>
-                <p>Синтез енергії з навколишнього середовища.</p>
-                <p>Нульовий викид CO2. Потужність: 4000 кВт.</p>
+            <div class="engine-card">
+                <h3>X-Force Hydrogen</h3>
+                <p>Нульові викиди. Потужність 4000 кВт. <br> Інноваційна паливна система.</p>
             </div>
         </div>
 
         <div class="spec-card">
-            <span class="label">0 to 100</span>
-            <span class="value">2.6 s</span>
-            <span class="desc">Fastest in class</span>
+            <div class="spec-label">0 to 100</div>
+            <div class="spec-value">2.6 s</div>
+            <div class="spec-desc">Fastest in class</div>
         </div>
 
         <div class="spec-card">
-            <span class="label">Interior</span>
-            <span class="value">AI Bio</span>
-            <span class="desc">Нейронний зв'язок</span>
+            <div class="spec-label">Interior</div>
+            <div class="spec-value">AI Bio</div>
+            <div class="desc">Нейронний зв'язок</div>
         </div>
 
         <div class="spec-card">
-            <span class="label">Range</span>
-            <span class="value">600k km</span>
-            <span class="desc">Infinite Energy</span>
+            <div class="spec-label">Range</div>
+            <div class="spec-value">600k km</div>
+            <div class="desc">Infinite Energy</div>
         </div>
     </section>
 
-    <script>
-        // Код для заміни моделі на білу машину
-        const modelViewer = document.querySelector('#car-model');
-        // Це посилання на безкоштовну 3D модель футуристичного авто
-        modelViewer.src = "https://modelviewer.dev/shared-assets/models/glTF-Sample-Assets/Models/ToyCar/glTF-Binary/ToyCar.glb"; 
-        
-        // Маленький хак: ToyCar зазвичай жовта, але ми можемо знайти білу модель або завантажити свою. 
-        // Найкраще - завантажити файл .glb у свій GitHub і прописати шлях тут.
-    </script>
+    <footer>
+        © 2026 AURORAN MOTORS | FUTURE HERITAGE PROJECT
+    </footer>
 
 </body>
 </html>
