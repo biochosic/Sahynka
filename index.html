@@ -3,159 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toyota Avensis 2006 | Future Edition</title>
-    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <title>Toyota Avensis T25 | Turbo Diesel Edition</title>
     <style>
         :root {
-            --primary: #00f2fe;
-            --accent: #ff0055;
-            --bg: #050505;
+            --neon-blue: #00f2fe;
+            --deep-dark: #0a0a0c;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body {
+            margin: 0;
+            background-color: var(--deep-dark);
+            color: white;
+            font-family: 'Orbitron', sans-serif; /* Футуристичний шрифт */
+            overflow-x: hidden;
+        }
 
-        body { background-color: var(--bg); color: white; overflow-x: hidden; }
-
-        .bg-glow {
+        /* Фоновий ефект сітки */
+        .grid-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #111b2d 0%, #050505 100%);
+            background-image: linear-gradient(rgba(0, 242, 254, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 242, 254, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
             z-index: -1;
         }
 
         header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 25px 8%; position: absolute; width: 100%; z-index: 100;
+            padding: 40px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 5px;
         }
 
-        .logo { font-weight: 900; letter-spacing: 3px; color: var(--primary); font-size: 1.2rem; }
-
-        /* Стилі для 3D */
-        .hero {
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; position: relative;
+        .car-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
         }
 
-        model-viewer {
-            width: 100%; height: 75vh;
-            --glossy-reflections: 1;
+        .main-photo {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 242, 254, 0.2);
+            border: 1px solid var(--neon-blue);
+            transition: 0.5s;
         }
 
-        /* Кнопки взаємодії на машині */
-        .hotspot {
-            display: block; width: 24px; height: 24px; border-radius: 50%;
-            border: none; background-color: var(--primary);
-            box-shadow: 0 0 10px var(--primary); color: #000;
-            font-weight: bold; cursor: pointer; transition: 0.3s;
+        /* Точки інтерактивності (Сканери) */
+        .scanner-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-blue);
+            animation: pulse 2s infinite;
         }
 
-        .hotspot:hover { transform: scale(1.3); background-color: white; }
-
-        .annotation {
-            background: rgba(0, 0, 0, 0.8); color: white; padding: 8px 12px;
-            border-radius: 4px; font-size: 12px; position: absolute;
-            transform: translate(20px, -20px); width: max-content;
-            display: none; border: 1px solid var(--primary);
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .hotspot:active .annotation, .hotspot:focus .annotation { display: block; }
-
-        /* Картки характеристик */
-        .specs-container {
-            display: flex; gap: 20px; padding: 50px 8%;
-            justify-content: center; flex-wrap: wrap;
-            background: rgba(255,255,255,0.02);
+        .info-box {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid var(--neon-blue);
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            width: 200px;
+            z-index: 10;
+            backdrop-filter: blur(5px);
         }
 
-        .spec-item {
-            border-left: 2px solid var(--primary);
-            padding: 10px 20px; min-width: 200px;
+        .scanner-point:hover + .info-box {
+            display: block;
         }
 
-        .spec-item h4 { color: var(--primary); text-transform: uppercase; font-size: 0.8rem; }
-        .spec-item p { font-size: 1.2rem; font-weight: bold; }
+        /* Специфікації */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 50px 10%;
+        }
 
-        .title-block { text-align: center; margin-bottom: -50px; z-index: 10; }
-        .title-block h1 { font-size: 4rem; text-transform: uppercase; letter-spacing: -2px; }
-        .title-block span { color: var(--primary); }
+        .spec-card {
+            background: var(--glass);
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            transition: 0.3s;
+        }
 
+        .spec-card:hover {
+            border-color: var(--neon-blue);
+            transform: translateY(-5px);
+        }
+
+        .spec-card h3 { color: var(--neon-blue); margin-bottom: 10px; }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            opacity: 0.5;
+            font-size: 0.8rem;
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="bg-glow"></div>
+    <div class="grid-bg"></div>
 
     <header>
-        <div class="logo">AVENSIS // TURBODIESEL</div>
-        <div class="nav">D-4D ENGINE | 2006 T25</div>
+        <h1>Toyota Avensis <span>T25</span></h1>
+        <p style="color: var(--neon-blue);">Project: Future Diesel Heritage</p>
     </header>
 
-    <section class="hero">
-        <div class="title-block">
-            <h1>TOYOTA <span>AVENSIS</span></h1>
-            <p>FUTURE CLASSIC EDITION</p>
+    <div class="car-container">
+        <img src="1509.jpg" alt="Toyota Avensis" class="main-photo">
+
+        <div class="scanner-point" style="top: 60%; left: 15%;"></div>
+        <div class="info-box" style="top: 40%; left: 0%;">
+            <strong>ENGINE: 2.2 D-4D</strong><br>
+            Турбодизель з високим крутним моментом. Економічність та міць.
         </div>
 
-        <model-viewer 
-            id="avensis"
-            src="https://modelviewer.dev/shared-assets/models/glTF-Sample-Assets/Models/ToyCar/glTF-Binary/ToyCar.glb" 
-            alt="Toyota Avensis 2006"
-            camera-controls 
-            auto-rotate 
-            shadow-intensity="1"
-            environment-image="neutral"
-            exposure="1.2">
-
-            <button class="hotspot" slot="hotspot-hood" data-position="0.2m 0.6m 1.5m" data-normal="0m 1m 0m">
-                <div class="annotation">2.2 D-4D Turbo Diesel (150 hp)</div>
-            </button>
-
-            <button class="hotspot" slot="hotspot-door" data-position="0.8m 0.8m 0m" data-normal="1m 0m 0m">
-                <div class="annotation">Відкрити салон (Люкс-комфорт)</div>
-            </button>
-
-        </model-viewer>
-
-        <div style="color: var(--primary); font-size: 0.7rem; letter-spacing: 2px;">
-            УТРИМУЙ ТА КРУТИ ДЛЯ ОГЛЯДУ 360°
+        <div class="scanner-point" style="top: 45%; left: 85%;"></div>
+        <div class="info-box" style="top: 25%; left: 70%;">
+            <strong>CARGO SPACE</strong><br>
+            Величезний багажник універсала. Місця вистачить для всього.
         </div>
-    </section>
 
-    <div class="specs-container">
-        <div class="spec-item">
-            <h4>Двигун</h4>
-            <p>2.2 D-4D</p>
-        </div>
-        <div class="spec-item">
-            <h4>Потужність</h4>
-            <p>400 Нм / 150 к.с.</p>
-        </div>
-        <div class="spec-item">
-            <h4>Стан</h4>
-            <p>НЕ БИТА / НЕ ФАРБОВАНА</p>
-        </div>
-        <div class="spec-item">
-            <h4>Технологія</h4>
-            <p>Common Rail</p>
+        <div class="scanner-point" style="top: 75%; left: 48%;"></div>
+        <div class="info-box" style="top: 55%; left: 55%;">
+            <strong>CHASSIS</strong><br>
+            М'яка підвіска для комфортних подорожей на будь-які відстані.
         </div>
     </div>
 
-    <footer style="text-align: center; padding: 40px; font-size: 0.7rem; opacity: 0.4;">
-        TOYOTA MOTOR CORPORATION | GITHUB PROJECT 2026
+    <section class="specs-grid">
+        <div class="spec-card">
+            <h3>FUEL</h3>
+            <p>Diesel D-4D</p>
+        </div>
+        <div class="spec-card">
+            <h3>STYLE</h3>
+            <p>Station Wagon</p>
+        </div>
+        <div class="spec-card">
+            <h3>STATUS</h3>
+            <p>Reliable Legend</p>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 Avensis Turbo Project | Створено з повагою до японської інженерії
     </footer>
 
-    <script>
-        // Тут ти можеш підставити свою модель Авенсіса, якщо знайдеш її у форматі .glb
-        // Поки що стоїть стандартне авто для демонстрації взаємодії
-        const modelViewer = document.querySelector('#avensis');
-        
-        // Можна додати обробку кліку по точках
-        modelViewer.querySelectorAll('.hotspot').forEach((hotspot) => {
-            hotspot.addEventListener('click', () => {
-                alert(hotspot.querySelector('.annotation').innerText);
-            });
-        });
-    </script>
 </body>
 </html>
-
