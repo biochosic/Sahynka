@@ -99,7 +99,6 @@
             box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
         }
 
-        /* --- МАШИНА (ОНОВЛЕНО) --- */
         .car-container {
             position: relative;
             display: flex;
@@ -112,7 +111,6 @@
             width: 100%;
             max-width: 700px;
             z-index: 2;
-            /* Плавне розмиття країв, щоб картинка зливалася з фоном */
             mask-image: radial-gradient(circle, black 50%, transparent 95%);
             -webkit-mask-image: radial-gradient(circle, black 50%, transparent 95%);
             filter: contrast(1.1) brightness(1.1) drop-shadow(0 0 30px rgba(112, 0, 255, 0.3));
@@ -132,7 +130,6 @@
             pointer-events: none;
         }
 
-        /* --- РЕШТА ЕЛЕМЕНТІВ --- */
         .side-menu {
             display: flex;
             flex-direction: column;
@@ -165,7 +162,7 @@
             display: grid;
             grid-template-columns: 1.2fr 1fr 1fr 1fr;
             gap: 20px;
-            padding: 40px 0 100px;
+            padding: 40px 0 60px;
         }
 
         .specs-title-box h2 {
@@ -224,6 +221,37 @@
             color: #888;
         }
 
+        /* --- НОВА СЕКЦІЯ ТЕХНОЛОГІЙ --- */
+        .info-section {
+            width: 90%;
+            max-width: 1400px;
+            padding-bottom: 100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 60px;
+        }
+
+        .info-block h4 {
+            font-family: 'Orbitron', sans-serif;
+            color: white;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .info-block p {
+            color: var(--text-gray);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .info-accent {
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
         footer {
             width: 100%;
             text-align: center;
@@ -238,6 +266,7 @@
         @media (max-width: 1024px) {
             .hero { grid-template-columns: 1fr 1fr; }
             .side-menu { display: none; }
+            .info-section { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
@@ -300,6 +329,17 @@
             <div class="spec-label">Range</div>
             <div class="spec-value">600k km</div>
             <div class="spec-desc">Infinite Energy</div>
+        </div>
+    </section>
+
+    <section class="info-section">
+        <div class="info-block">
+            <h4>EVOLUTION OF ENERGY</h4>
+            <p>AURORAN X-900 використовує запатентовану технологію <span class="info-accent">Molecular Hydrogen Fusion</span>. На відміну від класичних електрокарів, наша система генерує енергію безпосередньо під час руху, що дозволяє забути про тривалу зарядку. Достатньо лише 3 хвилини для повної заправки системи синтезу.</p>
+        </div>
+        <div class="info-block">
+            <h4>BEYOND DRIVING</h4>
+            <p>Це не просто машина, а розширення вашої свідомості. Вбудований квантовий процесор обробляє мільйони сценаріїв на секунду, забезпечуючи <span class="info-accent">Level 5 Autonomy</span>. Кожна деталь корпусу створена за допомогою аеродинамічного моделювання в умовах віртуальної стратосфери.</p>
         </div>
     </section>
 
