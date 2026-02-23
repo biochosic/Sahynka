@@ -26,7 +26,6 @@
             overflow-x: hidden;
         }
 
-        /* Навігація */
         header {
             width: 90%;
             max-width: 1400px;
@@ -53,14 +52,13 @@
             letter-spacing: 1px;
         }
 
-        /* Основний контент */
         .hero {
             width: 90%;
             max-width: 1400px;
             display: grid;
             grid-template-columns: 1fr 1.5fr 0.3fr;
             align-items: center;
-            padding: 80px 0;
+            padding: 60px 0;
             position: relative;
         }
 
@@ -101,34 +99,40 @@
             box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
         }
 
-        /* Машина */
+        /* --- МАШИНА (ОНОВЛЕНО) --- */
         .car-container {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            perspective: 1000px;
         }
 
         .car-image {
-            width: 110%; /* Трохи зменшив, щоб краще вписати в макет */
+            width: 100%;
+            max-width: 700px;
             z-index: 2;
-            filter: drop-shadow(0 0 40px rgba(112, 0, 255, 0.2));
-            transition: transform 0.5s ease;
+            /* Плавне розмиття країв, щоб картинка зливалася з фоном */
+            mask-image: radial-gradient(circle, black 50%, transparent 95%);
+            -webkit-mask-image: radial-gradient(circle, black 50%, transparent 95%);
+            filter: contrast(1.1) brightness(1.1) drop-shadow(0 0 30px rgba(112, 0, 255, 0.3));
+            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .car-image:hover {
-            transform: translateY(-10px);
+            transform: scale(1.02) rotateY(-5deg);
         }
 
         .glow-bg {
             position: absolute;
-            width: 450px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(112, 0, 255, 0.15) 0%, transparent 70%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(112, 0, 255, 0.2) 0%, transparent 70%);
             z-index: 1;
+            pointer-events: none;
         }
 
-        /* Права колонка кнопок */
+        /* --- РЕШТА ЕЛЕМЕНТІВ --- */
         .side-menu {
             display: flex;
             flex-direction: column;
@@ -155,7 +159,6 @@
             box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
         }
 
-        /* Нижня частина - Характеристики */
         .specs-section {
             width: 90%;
             max-width: 1400px;
@@ -218,7 +221,7 @@
 
         .spec-desc {
             font-size: 0.75rem;
-            color: #888; /* Зробив колір світлішим для кращої видимості */
+            color: #888;
         }
 
         footer {
@@ -232,21 +235,16 @@
             border-top: 1px solid var(--glass-border);
         }
 
-        /* Адаптивність для мобілок */
+        @media (max-width: 1024px) {
+            .hero { grid-template-columns: 1fr 1fr; }
+            .side-menu { display: none; }
+        }
+
         @media (max-width: 768px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
+            .hero { grid-template-columns: 1fr; text-align: center; }
             .hero-text p { margin: 0 auto 40px; }
-            .side-menu {
-                flex-direction: row;
-                justify-content: center;
-                margin-top: 20px;
-            }
-            .specs-section {
-                grid-template-columns: 1fr;
-            }
+            .specs-section { grid-template-columns: 1fr; }
+            .car-image { width: 100%; }
         }
     </style>
 </head>
